@@ -17,6 +17,10 @@ settings:
     displayName: Rename unorganized scenes
     description: Rename files for scenes that are not marked as organized.
     type: BOOLEAN
+  renameRelatedFiles:
+    displayName: Rename/move files with the same name but different extensions
+    description: If enabled, the plugin will rename additional files that share the same base name (e.g. .funscript, .vtt).
+    type: BOOLEAN
   defaultDirectoryPathFormat:
     displayName: Default directory path format
     description: The default directory path to put renamed scene files in.

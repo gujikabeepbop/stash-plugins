@@ -141,6 +141,43 @@ class StashFile:
     def get_new_file_path(self) -> pathlib.Path:
         return self.get_new_file_folder() / self.get_new_file_name()
 
+    def rename_related_files(self, old_path: pathlib.Path, new_path: pathlib.Path, dry_run: bool):
+        if not self.config.rename_related_files:
+            return
+
+        old_directory = old_path.parent
+        new_directory = new_path.parent
+        related_files = [
+            path
+            for path in old_directory.glob(f"{old_path.stem}.*")
+            if path != old_path
+        ]
+
+        if not related_files:
+            return
+
+        for related_file in related_files:
+            target_path = new_directory / f"{new_path.stem}{related_file.suffix}"
+
+            if related_file == target_path:
+                continue
+
+            if target_path.exists():
+                log.warning(f"Related file already exists at {target_path}, skipping rename for {related_file}")
+                continue
+
+            log.info(f"Renaming related file from {related_file} to {target_path}")
+
+            if dry_run:
+                continue
+
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+
+            try:
+                related_file.rename(target_path)
+            except OSError as error:
+                log.error(f"Failed to rename related file from {related_file} to {target_path}: {error}")
+
     def rename_file(self):
         old_path = self.get_old_file_path()
         new_path = self.get_new_file_path()
@@ -166,6 +203,7 @@ class StashFile:
         log.info(f"Renaming file from {old_path} to {new_path}")
         if self.config.dry_run:
             log.info("Dry run enabled, not actually renaming the file.")
+            self.rename_related_files(old_path, new_path, dry_run=True)
             return
 
         moved_file = self.stash.call_GQL(
@@ -179,3 +217,4 @@ class StashFile:
         )
 
         log.info(f"File renamed successfully: {moved_file}")
+        self.rename_related_files(oldpath, new_path, dry_run=False)

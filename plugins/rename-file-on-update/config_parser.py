@@ -4,6 +4,7 @@ class Config:
         "defaultFileNameFormat": "",
         "dryRun": False,
         "renameUnorganized": False,
+        "renameRelatedFiles": True,
         "removeExtraSpacesFromFileName": False,
         "duplicateFileSuffix": " ($index$)",
     }
