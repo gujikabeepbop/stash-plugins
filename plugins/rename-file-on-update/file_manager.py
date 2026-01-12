@@ -117,8 +117,6 @@ class StashFile:
         if self.config.remove_and_replace_as_in_whisparr:
             replacements = {
                 ":": "",
-                "\\": "+",
-                "/": "+",
                 "<": "",
                 ">": "",
                 "?": "!",
