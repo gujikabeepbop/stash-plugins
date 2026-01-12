@@ -115,7 +115,7 @@ class StashFile:
             directory_path = path.parent.absolute()
 
         if self.config.remove_columns:
-            directory_path = re.sub(r":", "", directory_path)
+            directory_path = pathlib.Path(re.sub(r":", "", str(directory_path)))
 
         return directory_path
     
