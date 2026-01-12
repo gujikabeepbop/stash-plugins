@@ -114,6 +114,9 @@ class StashFile:
             path = pathlib.Path(self.file_data["path"])
             directory_path = path.parent.absolute()
 
+        if self.config.remove_columns:
+            directory_path = re.sub(r":", "", directory_path)
+
         return directory_path
     
     def get_new_file_name(self) -> str:
