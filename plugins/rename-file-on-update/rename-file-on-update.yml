@@ -42,9 +42,9 @@ settings:
     displayName: Remove extra spaces from file name
     description: If enabled, the plugin will remove extra spaces from the file name.
     type: BOOLEAN
-  removeColumns:
-    displayName: Remove columns from directory path
-    description: If enabled, the plugin will remove columns from directory path to try to match Whisparr convention
+  removeAndReplaceAsInWhisparr:
+    displayName: Remove columns, replace ?, etc from directory path
+    description: If enabled, the plugin will try to match Whisparr remove and replace illegal characters logic.
     type: BOOLEAN
   allowUnsafeCharacters:
     displayName: Allow unsafe characters

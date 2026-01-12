@@ -114,9 +114,24 @@ class StashFile:
             path = pathlib.Path(self.file_data["path"])
             directory_path = path.parent.absolute()
 
-        if self.config.remove_columns:
-            directory_path = pathlib.Path(re.sub(r":", "", str(directory_path)))
+        if self.config.remove_and_replace_as_in_whisparr:
+            replacements = {
+                ":": "",
+                "\\": "+",
+                "/": "+",
+                "<": "",
+                ">": "",
+                "?": "!",
+                "*": "-",
+                "|": "",
+                "\"": "",
+            }
 
+            escaped_chars = ''.join(re.escape(c) for c in replacements.keys())
+            pattern = re.compile(f'[{escaped_chars}]')
+            
+            directory_path = pathlib.Path(pattern.sub(lambda m: replacements[m.group(0)], str(directory_path)))
+            
         return directory_path
     
     def get_new_file_name(self) -> str:
