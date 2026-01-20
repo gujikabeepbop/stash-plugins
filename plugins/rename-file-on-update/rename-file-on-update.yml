@@ -30,7 +30,7 @@ settings:
     description: The directory path to put renamed scene files in when not matching first condition
     type: STRING
   defaultGraphqlEndpoint:
-    displayname: Default GraphQL endpoint
+    displayName: Default GraphQL endpoint
     description: The GraphQL endpoint matching default directory
     type: STRING
   defaultFileNameFormat:
