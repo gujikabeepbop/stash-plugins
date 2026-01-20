@@ -112,7 +112,7 @@ class StashFile:
 
     def get_new_file_folder(self) -> pathlib.Path:
         if self.config.default_directory_path_format:
-            if self.config.default_graphql_endpoint in SCENE_VARIABLE["endpoints"](self.stash, self.scene_data):
+            if self.config.default_graphql_endpoint in SCENE_VARIABLES["endpoints"](self.stash, self.scene_data):
                 directory_format = self.config.default_directory_path_format
             else:
                 directory_format = self.config.second_directory_path_format
