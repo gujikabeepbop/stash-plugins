@@ -17,6 +17,9 @@ studio {
         id
         name
     }
+    stash_ids {
+        endpoint
+    }
 }
 
 files {

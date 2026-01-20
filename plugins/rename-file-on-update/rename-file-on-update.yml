@@ -25,6 +25,14 @@ settings:
     displayName: Default directory path format
     description: The default directory path to put renamed scene files in.
     type: STRING
+  secondDirectoryPathFormat:
+    displayName: Second directory path format
+    description: The directory path to put renamed scene files in when not matching first condition
+    type: STRING
+  defaultGraphqlEndpoint:
+    displayname: Default GraphQL endpoint
+    description: The GraphQL endpoint matching default directory
+    type: STRING
   defaultFileNameFormat:
     displayName: Default file name format
     description: The default file name to use for renamed scene files.

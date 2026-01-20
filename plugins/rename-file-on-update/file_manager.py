@@ -46,6 +46,10 @@ SCENE_VARIABLES = {
     "studio_code": key_getter("code"),
     "studio_name": lambda _, scene: scene.get("studio", {}).get("name", ""),
     "year": lambda _, scene: scene.get("date", "").split("-")[0] if scene.get("date") else "",
+    "endpoints": lambda _, scene: [
+        sid.get("endpoint", "")
+        for sid in scene.get("studio", {}).get("stash_ids", [])
+    ],
 }
 
 def find_variables(format_template) -> list[str]:
@@ -108,7 +112,11 @@ class StashFile:
 
     def get_new_file_folder(self) -> pathlib.Path:
         if self.config.default_directory_path_format:
-            directory_path = apply_format(self.config.default_directory_path_format, self.stash, self.scene_data, self.file_data)
+            if self.config.default_graphql_endpoint in SCENE_VARIABLE["endpoints"](self.stash, self.scene_data):
+                directory_format = self.config.default_directory_path_format
+            else:
+                directory_format = self.config.second_directory_path_format
+            directory_path = apply_format(directory_format, self.stash, self.scene_data, self.file_data)
             directory_path = pathlib.Path(directory_path).absolute()
         else:
             path = pathlib.Path(self.file_data["path"])
