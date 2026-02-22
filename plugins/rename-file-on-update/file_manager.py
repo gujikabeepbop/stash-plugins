@@ -123,6 +123,7 @@ class StashFile:
             directory_path = path.parent.absolute()
 
         if self.config.remove_and_replace_as_in_whisparr:
+            # https://github.com/Whisparr/Whisparr-Eros/blob/c9e388ce95d12b16db0c5803754adee4eb57bc01/src/NzbDrone.Core/Organizer/FileNameBuilder.cs#L897
             replacements = {
                 ":": "",
                 "<": "",
@@ -136,7 +137,14 @@ class StashFile:
             escaped_chars = ''.join(re.escape(c) for c in replacements.keys())
             pattern = re.compile(f'[{escaped_chars}]')
             
-            directory_path = pathlib.Path(pattern.sub(lambda m: replacements[m.group(0)], str(directory_path)))
+            name = pattern.sub(lambda m: replacements[m.group(0)], str(directory_path))
+
+            # Fold separators ('...' => '.')
+            name = re.sub(r'([- ._])(\1)+', r'\1', name)
+
+            name = name.strip(' ').lstrip('.')
+
+            directory_path = pathlib.Path(name)
             
         return directory_path
     
