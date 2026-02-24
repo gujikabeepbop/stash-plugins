@@ -132,19 +132,23 @@ class StashFile:
                 "*": "-",
                 "|": "",
                 "\"": "",
+                "/": "+",
             }
 
             escaped_chars = ''.join(re.escape(c) for c in replacements.keys())
             pattern = re.compile(f'[{escaped_chars}]')
             
-            name = pattern.sub(lambda m: replacements[m.group(0)], str(directory_path))
+            parent_path = directory_path.parent
+            folder_name = directory_path.name
+
+            folder_name = pattern.sub(lambda m: replacements[m.group(0)], str(folder_name))
 
             # Fold separators ('...' => '.')
-            name = re.sub(r'([- ._])(\1)+', r'\1', name)
+            folder_name = re.sub(r'([- ._])(\1)+', r'\1', folder_name)
 
-            name = name.strip(' ').lstrip('.')
+            folder_name = name.strip(' ').lstrip('.')
 
-            directory_path = pathlib.Path(name)
+            directory_path = parent_path / folder_name
             
         return directory_path
     
